@@ -14,12 +14,14 @@ module.exports = {
     "vue"
   ],
   moduleNameMapper: {
-    "^@/(.*)$": "<rootDir>/src/$1",
+    "^@/(((?!ipfs).)*)$": "<rootDir>/src/$1", // Any library except IPFS
     "vuetify/lib(.*)": "<rootDir>/node_modules/vuetify/es5$1",
     "@polkadot/ui-keyring": "<rootDir>/tests/unit/@polkadot-ui-keyring.mock.js",
     "@polkadot/keyring": "<rootDir>/tests/unit/@polkadot-keyring.mock.js",
     "@polkadot/api": "<rootDir>/tests/unit/@polkadot-api.mock.js",
-    "worker":"<rootDir>/tests/unit/worker.mock.js"
+    "@/common/lib/ipfs": "<rootDir>/tests/unit/ipfs-index.mock.js",
+    "@/common/lib/ipfs/ipfs-worker": "<rootDir>/tests/unit/ipfs-worker.mock.js",
+    "@/common/lib/ipfs/crypt-worker": "<rootDir>/tests/unit/crypt-worker.mock.js"
   },
   modulePaths: [
     "<rootDir>/src",

@@ -1,5 +1,5 @@
 import { createLocalVue, shallowMount, config } from "@vue/test-utils"
-import CustomerEmr from "@/views/Dashboard/Customer/Home/Emr"
+import CustomerEmrEdit from "@/views/Dashboard/Customer/Home/Emr/Edit"
 import Vuex from "vuex"
 import Vuetify from "vuetify"
 
@@ -22,11 +22,12 @@ describe("Customer EMR Dashboard", () => {
   })
 
   it("Should render", () => {
-    CustomerEmr.methods = {
+    CustomerEmrEdit.methods = {
+      initialData: jest.fn(), 
       initialDataKey: jest.fn(), 
-      metamaskDispatchAction: jest.fn(), 
+      fetchCategories: jest.fn(), 
     };
-    container = shallowMount(CustomerEmr, {
+    container = shallowMount(CustomerEmrEdit, {
       localVue,
       vuetify: new Vuetify(),
       store: new Vuex.Store({

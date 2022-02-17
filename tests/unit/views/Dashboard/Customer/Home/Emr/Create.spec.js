@@ -1,13 +1,17 @@
 import { createLocalVue, shallowMount, config } from "@vue/test-utils"
-import CustomerEmr from "@/views/Dashboard/Customer/Home/Emr"
+import CustomerEmrCreate from "@/views/Dashboard/Customer/Home/Emr/Create"
 import Vuex from "vuex"
 import Vuetify from "vuetify"
 
 config.stubs["ui-debio-icon"] = { template: "<div></div>" }
+config.stubs["ui-debio-file"] = { template: "<div></div>" }
 config.stubs["ui-debio-modal"] = { template: "<div></div>" }
+config.stubs["ui-debio-input"] = { template: "<div></div>" }
 config.stubs["ui-debio-banner"] = { template: "<div></div>" }
+config.stubs["ui-debio-textarea"] = { template: "<div></div>" }
+config.stubs["ui-debio-dropdown"] = { template: "<div></div>" }
 
-describe("Customer EMR Dashboard", () => {
+describe("Customer EMR Dashboard Create", () => {
   let container
   let localVue = null
 
@@ -22,11 +26,11 @@ describe("Customer EMR Dashboard", () => {
   })
 
   it("Should render", () => {
-    CustomerEmr.methods = {
-      initialDataKey: jest.fn(), 
-      metamaskDispatchAction: jest.fn(), 
+    CustomerEmrCreate.methods = {
+        initialDataKey: jest.fn(), 
+        fetchCategories: jest.fn(), 
     };
-    container = shallowMount(CustomerEmr, {
+    container = shallowMount(CustomerEmrCreate, {
       localVue,
       vuetify: new Vuetify(),
       store: new Vuex.Store({

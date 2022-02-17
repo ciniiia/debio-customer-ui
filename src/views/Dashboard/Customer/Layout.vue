@@ -12,6 +12,7 @@
       ui-debio-input(
         v-if="!success"
         :error="!!error"
+        autofocus
         :errorMessages="!!error ? error.message : null"
         :rules="$options.rules.password"
         :type="showPassword ? 'text' : 'password'"
@@ -53,8 +54,8 @@
           span.modal-password__cta-forgot OR
           div.modal-password__divider
           
-        router-link.modal-password__cta-forgot(
-          :to="{ name: 'landing-page' }"
+        .modal-password__cta-change-account(
+          @click="signOut"
         ) Not you? Try different account
 
 
@@ -111,7 +112,7 @@
 </template>
 
 <script>
-import {mapState} from "vuex"
+import {mapState, mapMutations, mapActions} from "vuex"
 import store from "@/store"
 import {validateForms} from "@/common/lib/validate"
 import {
@@ -131,6 +132,7 @@ import Navbar from "@/common/components/Navbar.vue"
 import Button from "@/common/components/Button"
 import maintenancePageLayout from "@/views/Dashboard/maintenancePageLayout"
 import errorMessage from "@/common/constants/error-messages"
+// import localStorage from "@/common/lib/local-storage"
 
 export default {
   name: "MainPage",
@@ -167,6 +169,10 @@ export default {
       wallet: (state) => state.substrate.wallet,
       localListNotification: (state) => state.substrate.localListNotification,
       mnemonicData: (state) => state.substrate.mnemonicData
+    }),
+
+    ...mapActions({
+      clearAuth: "auth/clearAuth"
     }),
 
     computeNavs() {
@@ -208,6 +214,10 @@ export default {
   },
 
   methods: {
+    ...mapMutations({
+      clearWallet: "metamask/CLEAR_WALLET"
+    }),
+
     handlePageError(error) {
       this.pageError = error
     },
@@ -250,6 +260,13 @@ export default {
       } catch (e) {
         this.error = e
       }
+    },
+
+    signOut() {
+      this.$router.push({name: "landing-page"})
+      localStorage.clear()
+      this.clearAuth()
+      this.clearWallet()
     }
   }
 }
@@ -283,11 +300,15 @@ export default {
   &__cta-submit
     font-size: 10px
 
-  &__cta-forgot
+  &__cta-forgot,
+  &__cta-change-account
     color: #5640A5 !important
     font-weight: bold
     text-transform: uppercase
+
+  &__cta-change-account
     font-size: 12px
+    cursor: pointer
 
   &__divider
     border-top: 1px solid #E9E9E9

@@ -197,7 +197,7 @@ export default {
         "OPEN": "#F60689",
         "CLAIMED": "#5640A5",
         "PROCESSED": "#4CBB65",
-        "WAITINGFORUNSTAKED": "#FAAD15",
+        "WAITINGFORUNSTAKE": "#FAAD15",
         "UNSTAKED": "#E32319"
       })
 
