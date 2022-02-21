@@ -7,6 +7,6 @@ export default Object.freeze({
     return val => val && val.length <= max || errorMessages.MAX_CHARACTER(max)
   },
   FILE_SIZE: (size) => {
-    return val => (val && val.size <= size ) || errorMessages.FILE_SIZE( size / 1000000 )
+    return val => (val && val.size < size ) || errorMessages.FILE_SIZE(size)
   }
 })

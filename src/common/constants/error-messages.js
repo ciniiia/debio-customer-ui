@@ -24,8 +24,13 @@ export default Object.freeze({
    */
   FILE_SIZE: (size) => {
     const message = "The total file size uploaded exceeds the maximum file size allowed"
-    if (size) return message + ` ${size}MB`
-    
+    if (size) {
+      if (size >= 1000000000) {
+        return message + "1 GB"
+      } else {
+        return message + ` ${size/1000000}MB`
+      }
+    }
     return message
   },
 

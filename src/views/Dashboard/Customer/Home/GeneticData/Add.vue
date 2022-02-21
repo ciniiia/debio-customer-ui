@@ -29,7 +29,7 @@
           v-model="document.file"
           variant="small"
           :rules="fileRule"
-          :accept="['.pdf', '.vcf', '.vcg.gz']"
+          :accept="['.txt', '.vcf', '.gz']"
           label="Upload File"
           placeholder="Choose File"
           validate-on-blur
@@ -51,11 +51,14 @@
           
         Button(
           :disabled="!disable"
-          :loading="isLoading"
           block
           color="secondary"
           @click="onSubmit"
         ) Submit
+
+      UploadingDialog(
+        :show="isLoading"
+      )
 
       SuccessDialog(
         :show="isSuccess"
@@ -80,11 +83,16 @@ import rulesHandler from "@/common/constants/rules"
 import { validateForms } from "@/common/lib/validate"
 import { checkCircleIcon } from "@/common/icons"
 import SuccessDialog from "@/common/components/Dialog/SuccessDialog"
+import UploadingDialog from "@/common/components/Dialog/UploadingDialog"
+
+
+// import uploadFile from "@/common/lib/pinata"
+// import IPFS from "ipfs-http-client"
 
 export default {
   name: "AddGeneticData",
   
-  components: { Button, SuccessDialog },
+  components: { Button, SuccessDialog, UploadingDialog },
 
   mixins: [validateForms],
 
@@ -138,7 +146,7 @@ export default {
     fileRule() {
       return[
         rulesHandler.FIELD_REQUIRED,
-        rulesHandler.FILE_SIZE(1000000)
+        rulesHandler.FILE_SIZE(1000000000)
       ]
     }
   },
@@ -277,17 +285,39 @@ export default {
       const blob = new Blob([data], { type: fileType })
       const newBlobData = new File([blob], fileName)
 
+      // UPLOAD TO PINATA API
+
+      // if (data) {
+      //   const test = await uploadFile({
+      //     title: this.document.title,
+      //     type: this.document.description,
+      //     file: blob
+      //   })
+
+      //   console.log({test})
+      //   return
+      // }
+
+      // // const data = encryptedFileChunks
+
+
+      // console.log("************")
+      // console.log(newBlobData)
+      // console.log(newBlobData.size)
+      // console.log("************")
+
+
       const uploaded = await new Promise((res, rej) => {
         try{
           const fileSize = newBlobData.size
           do {
-            let chunk = newBlobData.slice(offset, chunkSize + offset)
+            let chunk = newBlobData.slice(offset, chunkSize + offset)           
             ipfsWorker.workerUpload.postMessage({
               seed: chunk.seed,
               file: newBlobData
             })
             offset += chunkSize
-          } while (chunkSize + offset < fileSize)
+          } while ((chunkSize + offset) < fileSize)
 
           let uploadSize = 0
           ipfsWorker.workerUpload.onmessage = async (event) => {
@@ -317,6 +347,29 @@ export default {
       return `https://ipfs.io/ipfs/${path}`
     },
 
+    // async submit(dataFile) {
+    //   this.isLoading = true
+
+    //   if (!this.document.file) return
+
+    //   console.log("---------------")
+    //   console.log(IPFS)
+
+
+    //   const file = this.document.file
+    //   let ipfs = await IPFS({
+    //     host: "https://api.pinata.cloud/psa",
+    //     repo: "file-path" + Math.random()
+    //   })
+
+    //   console.log("ipfs", ipfs)
+
+
+    //   const { cid } = await ipfs.add(file)
+    //   const url = `https://ipfs.debio.network/ipfs/${cid.string}`
+    //   console.log(url)
+    // },
+
     async onSubmit() {
       this.isLoading = true
 
@@ -324,6 +377,7 @@ export default {
         if (!this.document.file) return
 
         const dataFile = await this.setupFileReader(this.document)
+
         await this.upload({
           encryptedFileChunks: dataFile.chunks,
           fileName: dataFile.fileName,
