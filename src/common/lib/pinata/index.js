@@ -1,6 +1,6 @@
 import pinataSDK from "@pinata/sdk"
 import NodeFormData from "form-data"
-import stream from "stream"
+import { Readable } from "stream"
 
 export default function uploadFile (val) {
 
@@ -18,21 +18,36 @@ export default function uploadFile (val) {
   }
   
   return new Promise((res, rej) => {
-    console.log(stream.Readable())
-    const file = stream.Readable.from(val.file.toString())
+    const readable = new Readable()
+
+    const reader = val.file
+      .stream()
+      .getReader()
+      
+    reader.read().then(function processBlob({ done, chunk }) {
+      if (done) {
+        readable.push(chunk)
+        readable.push(null)
+        return
+      }
+  
+      readable.push(chunk)
+  
+      return reader.read().then(processBlob)
+    })
     
     // const file = stream.Readable(val.file)
     console.log((val.file), "<<<<")
-    console.log("readable file ------> ", file)
+    console.log("readable file ------> ", readable)
     
 
     const data = new NodeFormData()
-    data.append("file", file)
+    data.append("file", readable)
     console.log(data)
 
 
 
-    if (!(file instanceof stream.Readable)) {
+    if (!(readable instanceof Readable)) {
       rej(new Error("readStream is not a readable stream"))
     }
 
@@ -105,7 +120,7 @@ export default function uploadFile (val) {
     })
     
     // pinata.pinFileToIPFS(data).then((result) => {
-    pinata.pinFileToIPFS(file, options).then((result) => {
+    pinata.pinFileToIPFS(readable, options).then((result) => {
       //handle results here
       res(result)
       console.log("result", result)

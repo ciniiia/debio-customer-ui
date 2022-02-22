@@ -86,8 +86,8 @@ import SuccessDialog from "@/common/components/Dialog/SuccessDialog"
 import UploadingDialog from "@/common/components/Dialog/UploadingDialog"
 
 
-// import uploadFile from "@/common/lib/pinata"
-// import IPFS from "ipfs-http-client"
+import uploadFile from "@/common/lib/pinata"
+import IPFS from "ipfs-http-client" // eslint-disable-line
 
 export default {
   name: "AddGeneticData",
@@ -287,24 +287,24 @@ export default {
 
       // UPLOAD TO PINATA API
 
-      // if (data) {
-      //   const test = await uploadFile({
-      //     title: this.document.title,
-      //     type: this.document.description,
-      //     file: blob
-      //   })
+      if (data) {
+        const test = await uploadFile({
+          title: this.document.title,
+          type: this.document.description,
+          file: blob
+        })
 
-      //   console.log({test})
-      //   return
-      // }
+        console.log({test})
+        return
+      }
 
-      // // const data = encryptedFileChunks
+      // const data = encryptedFileChunks
 
 
-      // console.log("************")
-      // console.log(newBlobData)
-      // console.log(newBlobData.size)
-      // console.log("************")
+      console.log("************")
+      console.log(newBlobData)
+      console.log(newBlobData.size)
+      console.log("************")
 
 
       const uploaded = await new Promise((res, rej) => {
