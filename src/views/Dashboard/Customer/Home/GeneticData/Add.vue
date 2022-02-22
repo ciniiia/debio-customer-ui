@@ -84,10 +84,7 @@ import { validateForms } from "@/common/lib/validate"
 import { checkCircleIcon } from "@/common/icons"
 import SuccessDialog from "@/common/components/Dialog/SuccessDialog"
 import UploadingDialog from "@/common/components/Dialog/UploadingDialog"
-
-
 import uploadFile from "@/common/lib/pinata"
-import IPFS from "ipfs-http-client" // eslint-disable-line
 
 export default {
   name: "AddGeneticData",
@@ -297,9 +294,6 @@ export default {
         console.log({test})
         return
       }
-
-      // const data = encryptedFileChunks
-
 
       console.log("************")
       console.log(newBlobData)
