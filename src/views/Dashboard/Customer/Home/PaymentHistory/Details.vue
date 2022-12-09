@@ -59,17 +59,17 @@
                   .price__label Paid Amount
                   .price__value.success--text
                     | {{ computeTotalPrices }}
-                    | {{ payment.currency }}
+                    | {{ formatUSDTE(payment.currency) }}
                 .price__block
                   .price__label Service Price
                   .price__value
                     | {{ formatPrice(payment.prices[0].value, payment.currency) }}
-                    | {{ payment.currency }}
+                    | {{ formatUSDTE(payment.currency) }}
                 .price__block(v-if="payment.section === 'order'")
                   .price__label QC Price
                   .price__value
                     | {{ payment.additional_prices.length ? formatPrice(payment.additional_prices[0].value, payment.currency) : "0" }}
-                    | {{ payment.currency }}
+                    | {{ formatUSDTE(payment.currency) }}
 
                 hr.mb-4
 
@@ -99,6 +99,8 @@ import {
 } from "@debionetwork/polkadot-provider"
 import { mapState } from "vuex"
 import getEnv from "@/common/lib/utils/env"
+import { formatUSDTE } from "@/common/lib/price-format.js"
+
 
 // NOTE: Use anchor tag with "noreferrer noopener nofollow" for security
 let timeout
@@ -114,7 +116,8 @@ export default {
     messageError: null,
     rewardPopup: false,
     payment: {},
-    txHash: null
+    txHash: null,
+    formatUSDTE
   }),
 
   computed: {
@@ -271,7 +274,7 @@ export default {
 
     formatPrice(price, currency) {
       let unit
-      currency === "USDT" || currency === "USDT.e" ? unit = "mwei" : unit = "ether"
+      currency === "USDT" || currency === "USDTE" ? unit = "mwei" : unit = "ether"
       const formatedPrice = this.web3.utils.fromWei(String(price.replaceAll(",", "")), unit)
       return parseFloat(formatedPrice)
     },
