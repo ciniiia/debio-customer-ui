@@ -56,7 +56,7 @@
       )
         h2.mt-5 Install Polkadot Extension
         ui-debio-icon.mb-8(:icon="alertTriangleIcon" stroke size="80")
-        p.second-opinion__modal-subtitle This action requires you to install Polkadot Extension and redirect to myriad.social platform. Press Install to read the instruction and install the extension
+        p.second-opinion__modal-subtitle Press install Polkadot Extensions button below to continue, your second opinion will be redirected to myriad.social platform.
 
         ui-debio-button(
           block
