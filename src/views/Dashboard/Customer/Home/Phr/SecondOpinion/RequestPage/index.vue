@@ -7,18 +7,19 @@
 
     .request-second-opinion__nav-cards
       v-card.request-second-opinion__nav-card
-        .request-second-opinion__nav-card-title Complete three steps to request medical opinion
-        .request-second-opinion__nav-card-text Help us get to know you more deeply, complete your profile now!
+        .request-second-opinion__nav-card-title Complete two steps to request medical opinion
+        .request-second-opinion__nav-card-title Step {{ step }}
+        .request-second-opinion__nav-card-text {{ stepper[step] }}
+        
+        .request-second-opinion__step-wrapper
+          .request-second-opinion__step-box(:class="{'request-second-opinion__step-box-selected': step === 1 || step === 2}")
+          .request-second-opinion__step-box(:class="{'request-second-opinion__step-box-selected': step === 2}")
+
 
       v-card.request-second-opinion__nav-card
-        .request-second-opinion__nav-card-title You need help?
+        .request-second-opinion__nav-card-title Help Desk
         .request-second-opinion__nav-card-text Our team is ready to answer all your questions about our program. What are you waiting for? 
           a  click here
-
-        .request-second-opinion__step-wrapper
-          .request-second-opinion__step-box(:class="{'request-second-opinion__step-box-selected': !selectAverage}")
-          .request-second-opinion__step-box(:class="{'request-second-opinion__step-box-selected': submitPreview}")
-          .request-second-opinion__step-box(:class="{'request-second-opinion__step-box-selected': submitPreview}")
 
 
 </template>
@@ -34,7 +35,12 @@ export default {
   data: () => ({
     isDescribing: true,
     isGrantingAccess: false,
-    dataRequest: null
+    dataRequest: null,
+    stepper: {
+      1: "Describe your symptom by choosing what category it falls under, whether mental or physical.",
+      2: "Grant access to your personal health record for review by a health professional to provide you with a better secondary opinion solution."
+    },
+    step: 1
   }),
 
 
@@ -45,11 +51,13 @@ export default {
     onSubmit(val) {
       this.dataRequest = val
       this.isDescribing = false
+      this.step = 2
       this.isGrantingAccess = true
     },
 
     toDescribeCard() {
       this.isGrantingAccess = false
+      this.step = 1
       this.isDescribing = true
     }
   }

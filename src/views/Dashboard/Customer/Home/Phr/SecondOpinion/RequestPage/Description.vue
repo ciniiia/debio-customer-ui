@@ -1,10 +1,10 @@
 <template lang="pug">
   v-card.request-second-opinion-card
-    .request-second-opinion-card__title First Step, Describe your symptoms
+    .request-second-opinion-card__title Describe your symptoms
 
     v-divider.my-5 
 
-    label.text-label Looking for 
+    label.text-label Select Category 
 
     v-radio-group.request-second-opinion-card__radio-input(
       v-model="category"
