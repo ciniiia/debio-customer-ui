@@ -3,7 +3,7 @@
     .second-opinion-banner
       .second-opinion-banner__content
         .second-opinion-banner__title DeBio Second Opinion
-        .second-opinion-banner__sub-title Upload a collection of your Personal Health Records that involved in your medical history (diagnoses, treatment plans, immunization, allergies, radiology and laboratory) and get 2nd opinion
+        .second-opinion-banner__sub-title Use your uploaded PHR to get second opinion
 
       v-img(
         alt="no-list-data"
